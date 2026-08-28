@@ -61,3 +61,44 @@ pnpm mcp        # MCP server (Maranello catalog tools)
 ## Workflow
 
 The Convergio plan-execution flow (worktrees, `cvg plan tree`, Thor gate) is documented in [.claude/CLAUDE.md](./.claude/CLAUDE.md) and bound by [CONSTITUTION.md](./CONSTITUTION.md) X1-X8.
+
+## Tooling shortcuts
+
+### Component lookup
+Search `src/lib/component-catalog-data.ts` (108 entries) by keyword and read `whenToUse`. Or call the MCP server:
+
+```bash
+pnpm mcp            # exposes search_components, get_component, analyze_yaml_needs
+```
+
+The MCP server is also wired in [.mcp.json](./.mcp.json) as `maranello-catalog` for auto-discovery.
+
+### Import convention
+```tsx
+import { MnDataTable, MnBadge } from "@/components/maranello";
+import { useLocale } from "@/lib/i18n";
+import { BarChart3 } from "lucide-react";
+import { cn } from "@/lib/utils";
+```
+
+### Color tokens (C3, T2)
+```css
+var(--mn-accent)       var(--mn-surface)         var(--mn-text)
+var(--mn-success)      var(--mn-surface-raised)  var(--mn-text-muted)
+var(--mn-warning)      var(--mn-surface-sunken)  var(--mn-border)
+var(--mn-error)        var(--mn-hover-bg)        var(--mn-focus-ring)
+```
+
+### Page composition
+```tsx
+// Maranello components only, pure data mapping
+export function Page() {
+  const data = useApiQuery(() => fetchData());
+  return (
+    <>
+      <MnDashboardStrip metrics={buildMetrics(data)} />
+      <MnDataTable columns={COLS} data={buildRows(data)} />
+    </>
+  );
+}
+```
